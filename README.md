@@ -31,6 +31,12 @@ cd Project-Atlas
 # Install dependencies with uv
 uv sync
 
+# Create .env file from example
+cp .env.example .env
+
+# Edit .env and add your GitHub token
+# GITHUB_TOKEN=your_github_token_here
+
 # Activate the virtual environment
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 ```
@@ -65,11 +71,14 @@ Sample Mission Statements:
 Analyze a GitHub issue and find the most relevant files:
 
 ```bash
-# Set your GitHub token
-export GITHUB_TOKEN=your_github_token
+# The tool automatically loads GITHUB_TOKEN from .env file
+# No need to export it manually!
 
 # Analyze an issue
 python -m triage_agent.cli issue 123 --repo mpagi-shafiq/Project-Atlas
+
+# Or you can still override with --token flag
+python -m triage_agent.cli issue 123 --repo mpagi-shafiq/Project-Atlas --token YOUR_TOKEN
 ```
 
 **Example Output:**

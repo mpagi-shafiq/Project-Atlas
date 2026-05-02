@@ -17,6 +17,10 @@ from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.syntax import Syntax
 from rich import print as rprint
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 from .repo_mapper import RepoMapper
 from .triage_logic import TriageEngine

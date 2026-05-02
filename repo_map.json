@@ -1,0 +1,86 @@
+{
+  "structure": {
+    "name": "",
+    "path": ".",
+    "type": "directory",
+    "children": [
+      {
+        "name": "src",
+        "path": "src",
+        "type": "directory",
+        "children": [
+          {
+            "name": "triage_agent",
+            "path": "src\\triage_agent",
+            "type": "directory",
+            "children": [],
+            "files": [
+              {
+                "name": "__init__.py",
+                "extension": ".py",
+                "size": 587
+              },
+              {
+                "name": "cli.py",
+                "extension": ".py",
+                "size": 9866
+              },
+              {
+                "name": "repo_mapper.py",
+                "extension": ".py",
+                "size": 7869
+              },
+              {
+                "name": "triage_logic.py",
+                "extension": ".py",
+                "size": 9476
+              }
+            ]
+          }
+        ],
+        "files": []
+      }
+    ],
+    "files": [
+      {
+        "name": "IMPLEMENTATION_PLAN.md",
+        "extension": ".md",
+        "size": 7605
+      },
+      {
+        "name": "main.py",
+        "extension": ".py",
+        "size": 92
+      },
+      {
+        "name": "PHASE1_PLAN.md",
+        "extension": ".md",
+        "size": 2727
+      },
+      {
+        "name": "pyproject.toml",
+        "extension": ".toml",
+        "size": 224
+      },
+      {
+        "name": "README.md",
+        "extension": ".md",
+        "size": 8570
+      },
+      {
+        "name": "uv.lock",
+        "extension": ".lock",
+        "size": 70229
+      }
+    ]
+  },
+  "missions": {
+    ".": "Contains Python source code",
+    "src": "Contains the main source code for the application",
+    "src\\triage_agent": "Contains Python source code"
+  },
+  "summary": {
+    "total_directories": 3,
+    "root_path": "."
+  }
+}

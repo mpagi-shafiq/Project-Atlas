@@ -8,11 +8,16 @@ This module provides functionality to:
 - Identify the top 3 most relevant files
 """
 
+import os
 import re
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 from collections import Counter
 from github import Github, GithubException
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 
 class TriageEngine:
@@ -24,10 +29,11 @@ class TriageEngine:
         
         Args:
             repo_path: Path to the repository
-            github_token: GitHub personal access token (optional)
+            github_token: GitHub personal access token (optional, will use GITHUB_TOKEN from .env if not provided)
         """
         self.repo_path = Path(repo_path)
-        self.github_token = github_token
+        # Use provided token or fall back to environment variable
+        self.github_token = github_token or os.getenv('GITHUB_TOKEN')
         self.github_client = None
         
         if github_token:
