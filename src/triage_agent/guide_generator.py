@@ -344,7 +344,7 @@ from auth.login import authenticate_user  # This tells you dependencies!
 #### 3. **Read Docstrings First**
 ```python
 def process_payment(amount: float) -> bool:
-    """
+    \"\"\"
     Process a payment transaction.
     
     Args:
@@ -352,7 +352,7 @@ def process_payment(amount: float) -> bool:
     
     Returns:
         True if successful, False otherwise
-    """
+    \"\"\"
 ```
 - Docstrings explain WHAT the code does
 - Implementation shows HOW it does it

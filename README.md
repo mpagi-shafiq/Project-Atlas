@@ -1,3 +1,5 @@
+Turning repository confusion into developer impact by automating codebase mapping and issue triage for the next generation of builders.
+
 # Developer Triage Agent 🔍
 
 A Python-based tool designed to help junior developers navigate complex repositories with confidence. The Developer Triage Agent provides intelligent analysis and guidance for understanding codebases, triaging issues, and onboarding new team members.
@@ -231,7 +233,7 @@ issue_triage:
 - [x] Issue triage logic
 
 ### Phase 2: Enhancement (In Progress)
-- [ ] Guide generator implementation
+- [x] Guide generator implementation
 - [ ] Interactive mode
 - [ ] Configuration file support
 - [ ] Comprehensive test suite
