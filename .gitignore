@@ -137,3 +137,6 @@ Thumbs.db
 *.log
 .cache/
 uv.lock
+.triage_cache.json
+JUNIOR_GUIDE.md
+repo_map.json

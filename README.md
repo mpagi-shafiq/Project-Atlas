@@ -100,13 +100,25 @@ Top Relevant Files:
 
 ### Generate Onboarding Guide
 
-Create documentation explaining data flow for a specific feature:
+Create a comprehensive `JUNIOR_GUIDE.md` that explains the codebase structure and relevant files:
 
 ```bash
-python -m triage_agent.cli guide "API request flow" --output JUNIOR_GUIDE.md
+# First, analyze an issue to identify relevant files
+python -m triage_agent.cli issue 123 --repo mpagi-shafiq/Project-Atlas
+
+# Then generate a detailed guide using the triage results
+python -m triage_agent.cli guide "Fix authentication bug"
+
+# Or generate a basic guide without triage data
+python -m triage_agent.cli guide "API request flow" --no-cache
 ```
 
-*Note: Guide generation is coming in the next release!*
+**What's Included in the Guide:**
+- Mission statements for each relevant file's directory
+- Relevance scores and confidence levels
+- Code previews from the top files
+- Navigation tips for junior developers
+- Step-by-step exploration guide
 
 ### Initialize Configuration
 

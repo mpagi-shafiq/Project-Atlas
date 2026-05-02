@@ -12,8 +12,9 @@ __author__ = "mpagi-shafiq"
 
 from .repo_mapper import RepoMapper
 from .triage_logic import TriageEngine
+from .guide_generator import GuideGenerator
 from .cli import cli
 
-__all__ = ["RepoMapper", "TriageEngine", "cli"]
+__all__ = ["RepoMapper", "TriageEngine", "GuideGenerator", "cli"]
 
 # Made with Bob

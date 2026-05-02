@@ -9,6 +9,7 @@ Provides commands for:
 
 import os
 import sys
+import json
 import click
 from pathlib import Path
 from rich.console import Console
@@ -24,6 +25,7 @@ load_dotenv()
 
 from .repo_mapper import RepoMapper
 from .triage_logic import TriageEngine
+from .guide_generator import GuideGenerator
 
 
 console = Console()
@@ -178,6 +180,16 @@ def issue(issue_number: int, repo: str, token: str, path: str, max_files: int):
                 )
             
             console.print(table)
+            
+            # Save triage results for guide generation
+            triage_cache_path = Path('.triage_cache.json')
+            with open(triage_cache_path, 'w', encoding='utf-8') as f:
+                json.dump({
+                    'feature_name': result['issue_title'],
+                    'relevant_files': result['relevant_files']
+                }, f, indent=2)
+            
+            console.print(f"\n[dim]💡 Tip: Run 'triage-agent guide \"{result['issue_title']}\"' to generate a detailed onboarding guide[/dim]")
         else:
             console.print("[yellow]⚠[/yellow] No relevant files found. Try a different issue or check the repository path.")
     
@@ -190,12 +202,23 @@ def issue(issue_number: int, repo: str, token: str, path: str, max_files: int):
 @click.argument('feature_name')
 @click.option('--path', '-p', default='.', help='Repository path')
 @click.option('--output', '-o', default='JUNIOR_GUIDE.md', help='Output file path')
-def guide(feature_name: str, path: str, output: str):
+@click.option('--use-cache/--no-cache', default=True, help='Use cached triage results')
+def guide(feature_name: str, path: str, output: str, use_cache: bool):
     """
     Generate an onboarding guide for a specific feature.
     
+    This command creates a JUNIOR_GUIDE.md file that explains:
+    - The top relevant files for the feature
+    - Mission statements for each file's directory
+    - Code previews and navigation tips
+    
     Example:
-        triage-agent guide "API request flow" --path /path/to/repo
+        # After running issue triage
+        triage-agent issue 123 --repo owner/repo
+        triage-agent guide "Fix authentication bug"
+        
+        # Or generate a basic guide without triage
+        triage-agent guide "API request flow" --no-cache
     """
     console.print(Panel.fit(
         "[bold cyan]Guide Generator[/bold cyan]\n"
@@ -203,15 +226,70 @@ def guide(feature_name: str, path: str, output: str):
         border_style="cyan"
     ))
     
-    console.print("\n[yellow]⚠[/yellow] Guide generation is coming in the next release!")
-    console.print("[dim]This feature will trace data flow and generate JUNIOR_GUIDE.md[/dim]\n")
-    
-    # Placeholder for future implementation
-    console.print("[dim]Planned features:[/dim]")
-    console.print("  • Trace data flow through the codebase")
-    console.print("  • Identify key components and their interactions")
-    console.print("  • Generate markdown documentation with diagrams")
-    console.print("  • Include code examples and explanations\n")
+    try:
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            console=console
+        ) as progress:
+            task = progress.add_task("Generating guide...", total=None)
+            
+            generator = GuideGenerator(path)
+            
+            # Check for cached triage results
+            triage_cache_path = Path('.triage_cache.json')
+            relevant_files = None
+            
+            if use_cache and triage_cache_path.exists():
+                progress.update(task, description="Loading triage results...")
+                with open(triage_cache_path, 'r', encoding='utf-8') as f:
+                    cache_data = json.load(f)
+                    relevant_files = cache_data.get('relevant_files', [])
+                    cached_feature = cache_data.get('feature_name', '')
+                
+                if relevant_files:
+                    console.print(f"\n[dim]Using cached triage results for: {cached_feature}[/dim]")
+            
+            if relevant_files:
+                # Generate guide with triage data
+                progress.update(task, description="Creating detailed guide...")
+                output_path = generator.generate_guide_from_triage(
+                    feature_name,
+                    relevant_files,
+                    output_path=output
+                )
+            else:
+                # Generate simple guide without triage
+                if use_cache:
+                    console.print("\n[yellow]⚠[/yellow] No cached triage results found.")
+                    console.print("[dim]Run 'triage-agent issue <number>' first for a detailed guide[/dim]\n")
+                
+                progress.update(task, description="Creating basic guide...")
+                output_path = generator.generate_simple_guide(
+                    feature_name,
+                    output_path=output
+                )
+            
+            progress.update(task, description="Complete!", completed=True)
+        
+        # Display success message
+        console.print(f"\n[green]✓[/green] Guide generated successfully!\n")
+        console.print(f"[bold]Output:[/bold] {output_path}")
+        console.print(f"[dim]Open this file to see the onboarding guide for junior developers[/dim]\n")
+        
+        # Show preview of what was generated
+        if relevant_files:
+            console.print(f"[bold]Included Files:[/bold]")
+            for i, file_info in enumerate(relevant_files, 1):
+                console.print(f"  {i}. {file_info['path']} ({file_info['relevance_score']:.1%} relevance)")
+        
+    except FileNotFoundError as e:
+        console.print(f"\n[red]✗ Error:[/red] {str(e)}", style="bold red")
+        console.print("[dim]Run 'triage-agent map' first to generate the repository map[/dim]\n")
+        sys.exit(1)
+    except Exception as e:
+        console.print(f"\n[red]✗ Error:[/red] {str(e)}", style="bold red")
+        sys.exit(1)
 
 
 @cli.command()
