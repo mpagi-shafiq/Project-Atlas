@@ -152,26 +152,44 @@ class GuideGenerator:
         Returns:
             Markdown content as string
         """
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        timestamp = datetime.now().strftime("%Y-%m-%d at %H:%M:%S")
         
-        content = f"""# Junior Developer Guide: {feature_name}
+        content = f"""<div align="center">
 
-> **Generated:** {timestamp}  
-> **Purpose:** Help junior developers understand the codebase structure and navigate relevant files
+# 🎓 Junior Developer Guide
+## {feature_name}
+
+![Status](https://img.shields.io/badge/Status-Active-success)
+![Generated](https://img.shields.io/badge/Generated-{timestamp.replace(' ', '%20')}-blue)
+![Confidence](https://img.shields.io/badge/AI%20Powered-Triage%20Agent-purple)
+
+</div>
 
 ---
 
-## 📋 Overview
+## 📋 What's Inside This Guide?
 
-This guide provides an overview of the key files related to **{feature_name}**. Each section includes:
-- File location and purpose
-- Mission statement (what this part of the codebase does)
-- Relevance score (how closely it matches your feature)
-- Code preview
+Welcome, junior developer! 👋 This guide was automatically generated to help you navigate the codebase for **{feature_name}**.
+
+### 🎯 You'll Find:
+- ✅ **Top {len(relevant_files)} most relevant files** for this feature
+- ✅ **Mission statements** explaining what each directory does
+- ✅ **Code previews** to get you started quickly
+- ✅ **Relevance scores** showing how confident we are about each file
+- ✅ **Pro tips** from experienced developers
+
+### 🚀 How to Use This Guide:
+1. Start with the **highest relevance file** (marked 🟢)
+2. Read the **mission statement** to understand the context
+3. Review the **code preview** to see what's inside
+4. Follow the **navigation tips** at the bottom
 
 ---
 
 ## 🎯 Key Files to Explore
+
+<details open>
+<summary><b>Click to expand/collapse all files</b></summary>
 
 """
         
@@ -196,97 +214,291 @@ This guide provides an overview of the key files related to **{feature_name}**. 
             # Read file snippet
             snippet = self.read_file_snippet(file_path)
             
-            # Confidence emoji
+            # Confidence emoji and badge
             confidence_emoji = {
                 'high': '🟢',
                 'medium': '🟡',
                 'low': '🔴'
             }.get(confidence, '⚪')
             
-            content += f"""### {i}. `{file_path}` {confidence_emoji}
+            confidence_badge = {
+                'high': '![High](https://img.shields.io/badge/Confidence-High-success)',
+                'medium': '![Medium](https://img.shields.io/badge/Confidence-Medium-yellow)',
+                'low': '![Low](https://img.shields.io/badge/Confidence-Low-red)'
+            }.get(confidence, '![Unknown](https://img.shields.io/badge/Confidence-Unknown-lightgrey)')
+            
+            # Priority indicator
+            priority = "🔥 START HERE!" if i == 1 else "⭐ High Priority" if i == 2 else "📌 Worth Checking"
+            
+            content += f"""
+### {confidence_emoji} File #{i}: `{file_path}`
 
-**Relevance Score:** {relevance:.1%} ({confidence} confidence)
+<table>
+<tr>
+<td><b>Relevance Score</b></td>
+<td>{relevance:.1%}</td>
+<td>{confidence_badge}</td>
+</tr>
+<tr>
+<td><b>Priority</b></td>
+<td colspan="2">{priority}</td>
+</tr>
+</table>
 
-**Directory Mission:**
+#### 📍 Directory Mission
 > {mission}
 
-**Why This File Matters:**
-This file scored {relevance:.1%} relevance to "{feature_name}". It's located in a directory that {mission.lower()}
+#### 💡 Why This File Matters
+This file scored **{relevance:.1%}** relevance to "{feature_name}". {
+    "This is your best starting point! The high relevance score indicates this file is central to the feature." if confidence == 'high'
+    else "This file has good relevance and is worth exploring after high-confidence files." if confidence == 'medium'
+    else "This file may have tangential relevance. Check it if the other files don't provide enough context."
+}
 
-**Code Preview:**
+#### 📝 Code Preview
+<details>
+<summary><b>Click to view code snippet</b></summary>
+
 ```{lang}
 {snippet}
 ```
+
+</details>
+
+#### 🎯 What to Look For
+- **Function/Class names** - They often describe the purpose
+- **Import statements** - Shows dependencies and related modules
+- **Comments and docstrings** - Previous developers left helpful hints
+- **Variable names** - Follow the data flow through the code
 
 ---
 
 """
         
-        # Add navigation guide
-        content += """## 🗺️ How to Navigate
-
-### Step 1: Start with the Highest Relevance File
-Begin by exploring the file with the highest relevance score (marked with 🟢). This is most likely where the core logic for your feature resides.
-
-### Step 2: Understand the Directory Structure
-Pay attention to the "Directory Mission" for each file. This tells you the purpose of that section of the codebase.
-
-### Step 3: Follow the Data Flow
-Look for:
-- **Function calls** - Where does data come from and where does it go?
-- **Imports** - What other modules does this file depend on?
-- **Class definitions** - What objects are being created and manipulated?
-
-### Step 4: Check Related Files
-Files in the same directory often work together. If you see imports from nearby files, explore those next.
+        # Close the details section
+        content += """
+</details>
 
 ---
 
-## 💡 Tips for Junior Developers
+## 🗺️ Step-by-Step Navigation Guide
 
-### Understanding Relevance Scores
-- **🟢 High (>70%)**: This file is very likely related to your feature. Start here!
-- **🟡 Medium (40-70%)**: This file has some relevance. Check it after high-confidence files.
-- **🔴 Low (<40%)**: This file might have tangential relevance. Explore if needed.
+<table>
+<tr>
+<td width="50px" align="center">1️⃣</td>
+<td><b>Start with the Highest Relevance File</b><br/>
+Begin with the file marked 🟢 (highest confidence). This is your best entry point into the feature.</td>
+</tr>
+<tr>
+<td width="50px" align="center">2️⃣</td>
+<td><b>Read the Directory Mission</b><br/>
+Understand the purpose of the directory before diving into code. Context is everything!</td>
+</tr>
+<tr>
+<td width="50px" align="center">3️⃣</td>
+<td><b>Scan the Code Preview</b><br/>
+Look at imports, function names, and class definitions. Get a feel for what the file does.</td>
+</tr>
+<tr>
+<td width="50px" align="center">4️⃣</td>
+<td><b>Follow the Data Flow</b><br/>
+Trace how data moves through functions. Look for input → processing → output patterns.</td>
+</tr>
+<tr>
+<td width="50px" align="center">5️⃣</td>
+<td><b>Explore Related Files</b><br/>
+Check imports and files in the same directory. They often work together.</td>
+</tr>
+</table>
 
-### Reading Code Effectively
-1. **Start with function/class names** - They often describe what the code does
-2. **Read comments and docstrings** - Previous developers left clues!
-3. **Trace variable names** - Follow how data transforms through the code
-4. **Use your IDE** - Jump to definitions and find references
+---
 
-### When You're Stuck
-- Look for test files (usually in `tests/` or `test_*.py`)
-- Check for README files in subdirectories
-- Search for the feature name in comments
-- Ask senior developers about the "Directory Mission" concepts
+## 🎓 Pro Tips for Junior Developers
+
+### 🔍 Understanding Relevance Scores
+
+| Score | Indicator | What It Means | Action |
+|-------|-----------|---------------|--------|
+| >70% | 🟢 High | Very likely related to your feature | **Start here!** This is your primary focus |
+| 40-70% | 🟡 Medium | Good relevance, worth exploring | Check after high-confidence files |
+| <40% | 🔴 Low | Tangential relevance | Explore only if needed for context |
+
+### 📖 Reading Code Like a Pro
+
+<details>
+<summary><b>🎯 Click for expert code reading strategies</b></summary>
+
+#### 1. **Top-Down Approach**
+```
+Start with: File name → Class names → Function names → Implementation
+Why: Gives you the big picture before diving into details
+```
+
+#### 2. **Follow the Imports**
+```python
+from auth.login import authenticate_user  # This tells you dependencies!
+```
+- Imports show you what this file depends on
+- They're like a roadmap to related functionality
+
+#### 3. **Read Docstrings First**
+```python
+def process_payment(amount: float) -> bool:
+    """
+    Process a payment transaction.
+    
+    Args:
+        amount: Payment amount in USD
+    
+    Returns:
+        True if successful, False otherwise
+    """
+```
+- Docstrings explain WHAT the code does
+- Implementation shows HOW it does it
+
+#### 4. **Trace Variable Transformations**
+```python
+raw_data → cleaned_data → processed_data → result
+```
+- Follow how data changes through the code
+- Each transformation tells part of the story
+
+</details>
+
+### 🛠️ Essential IDE Shortcuts
+
+<details>
+<summary><b>⌨️ Click for productivity shortcuts</b></summary>
+
+| Action | VS Code | PyCharm | What It Does |
+|--------|---------|---------|--------------|
+| Go to Definition | `F12` | `Ctrl+B` | Jump to where something is defined |
+| Find References | `Shift+F12` | `Alt+F7` | See everywhere it's used |
+| Search in Files | `Ctrl+Shift+F` | `Ctrl+Shift+F` | Find text across the project |
+| Rename Symbol | `F2` | `Shift+F6` | Safely rename variables/functions |
+| Show Documentation | `Ctrl+K Ctrl+I` | `Ctrl+Q` | View docstrings inline |
+
+</details>
+
+### 🚨 When You're Stuck
+
+<details>
+<summary><b>🆘 Click for troubleshooting strategies</b></summary>
+
+#### Strategy 1: Find the Tests
+```bash
+# Tests often show how code is meant to be used
+find . -name "*test*.py" | grep <feature_name>
+```
+
+#### Strategy 2: Search for Keywords
+```bash
+# Use grep or IDE search to find relevant code
+grep -r "authentication" --include="*.py"
+```
+
+#### Strategy 3: Check Git History
+```bash
+# See who worked on this recently
+git log --follow <filename>
+git blame <filename>  # See who wrote each line
+```
+
+#### Strategy 4: Draw a Diagram
+```
+[User Input] → [Validation] → [Processing] → [Database] → [Response]
+```
+- Visual representations help understanding
+- Map out the data flow on paper
+
+#### Strategy 5: Ask Smart Questions
+❌ Bad: "This code doesn't work"
+✅ Good: "In `auth/login.py` line 45, the `authenticate_user` function returns None. Based on the docstring, it should return a User object. What am I missing?"
+
+</details>
+
+### 🎯 Quick Wins for Understanding Code
+
+1. **🔖 Add Comments as You Learn**
+   ```python
+   # I learned: This function validates user input before saving
+   def validate_input(data):
+       ...
+   ```
+
+2. **🧪 Run the Tests**
+   ```bash
+   pytest tests/test_auth.py -v  # See what's expected to work
+   ```
+
+3. **🐛 Use Print Debugging**
+   ```python
+   print(f"DEBUG: user_id = {user_id}, type = {type(user_id)}")
+   ```
+
+4. **📝 Keep a Learning Log**
+   ```markdown
+   ## What I Learned Today
+   - `authenticate_user()` checks password hash, not plain text
+   - Session tokens expire after 24 hours
+   - User roles are stored in the `roles` table
+   ```
 
 ---
 
 ## 📚 Additional Resources
 
-### Repository Structure
-Run `triage-agent map` to see the full repository structure with mission statements for all directories.
+### 🔧 Tools to Help You
 
-### Issue Triage
-Use `triage-agent issue <number>` to find relevant files for specific GitHub issues.
+| Tool | Purpose | Command |
+|------|---------|---------|
+| **Repo Mapper** | See full project structure | `triage-agent map` |
+| **Issue Triage** | Find files for specific issues | `triage-agent issue <number>` |
+| **Guide Generator** | Create guides like this one | `triage-agent guide "<feature>"` |
 
-### Documentation
-Check the main README.md and any docs/ directory for additional context.
+### 📖 Learning Resources
 
----
-
-## 🚀 Next Steps
-
-1. **Open the top file** in your IDE
-2. **Set breakpoints** or add print statements to understand the flow
-3. **Run the tests** related to this feature
-4. **Make small changes** and observe the effects
-5. **Ask questions** - No question is too basic!
+- 📘 **Project README**: Start with the main README.md
+- 📗 **API Docs**: Check `docs/` directory if it exists
+- 📙 **Architecture Docs**: Look for ARCHITECTURE.md or similar
+- 📕 **Contributing Guide**: CONTRIBUTING.md has setup instructions
 
 ---
 
-*Generated by Developer Triage Agent - Helping junior developers navigate complex codebases*
+## 🚀 Your Action Plan
+
+### Today (30 minutes)
+- [ ] Open the #1 file in your IDE
+- [ ] Read through the code preview above
+- [ ] Identify the main functions/classes
+- [ ] Note any questions you have
+
+### This Week
+- [ ] Explore all files listed in this guide
+- [ ] Run the related tests
+- [ ] Make a small, safe change to understand the flow
+- [ ] Document what you learned
+
+### Remember
+> **"Every expert was once a beginner. The only difference is they didn't give up."**
+
+You've got this! 💪 Start with file #1 and take it one step at a time.
+
+---
+
+<div align="center">
+
+### 🎉 Happy Coding!
+
+*Generated by [Developer Triage Agent](https://github.com/mpagi-shafiq/Project-Atlas)*
+*Helping junior developers navigate complex codebases with confidence*
+
+![Made with Love](https://img.shields.io/badge/Made%20with-❤️-red)
+![For Juniors](https://img.shields.io/badge/For-Junior%20Developers-blue)
+![AI Powered](https://img.shields.io/badge/AI-Powered-purple)
+
+</div>
 """
         
         return content
