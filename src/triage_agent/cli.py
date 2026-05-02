@@ -253,7 +253,7 @@ def guide(feature_name: str, path: str, output: str, use_cache: bool):
             if relevant_files:
                 # Generate guide with triage data
                 progress.update(task, description="Creating detailed guide...")
-                output_path = generator.generate_guide_from_triage(
+                generated_path = generator.generate_guide_from_triage(
                     feature_name,
                     relevant_files,
                     output_path=output
@@ -265,7 +265,7 @@ def guide(feature_name: str, path: str, output: str, use_cache: bool):
                     console.print("[dim]Run 'triage-agent issue <number>' first for a detailed guide[/dim]\n")
                 
                 progress.update(task, description="Creating basic guide...")
-                output_path = generator.generate_simple_guide(
+                generated_path = generator.generate_simple_guide(
                     feature_name,
                     output_path=output
                 )
@@ -274,7 +274,7 @@ def guide(feature_name: str, path: str, output: str, use_cache: bool):
         
         # Display success message
         console.print(f"\n[green]✓[/green] Guide generated successfully!\n")
-        console.print(f"[bold]Output:[/bold] {output_path}")
+        console.print(f"[bold]Output:[/bold] {generated_path}")
         console.print(f"[dim]Open this file to see the onboarding guide for junior developers[/dim]\n")
         
         # Show preview of what was generated
