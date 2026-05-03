@@ -5,6 +5,19 @@
     "type": "directory",
     "children": [
       {
+        "name": "reports",
+        "path": "reports",
+        "type": "directory",
+        "children": [],
+        "files": [
+          {
+            "name": "ibm-bob-report.md",
+            "extension": ".md",
+            "size": 335911
+          }
+        ]
+      },
+      {
         "name": "src",
         "path": "src",
         "type": "directory",
@@ -18,12 +31,17 @@
               {
                 "name": "__init__.py",
                 "extension": ".py",
-                "size": 587
+                "size": 650
               },
               {
                 "name": "cli.py",
                 "extension": ".py",
-                "size": 9960
+                "size": 13572
+              },
+              {
+                "name": "guide_generator.py",
+                "extension": ".py",
+                "size": 18168
               },
               {
                 "name": "repo_mapper.py",
@@ -39,13 +57,31 @@
           }
         ],
         "files": []
+      },
+      {
+        "name": "tests",
+        "path": "tests",
+        "type": "directory",
+        "children": [],
+        "files": [
+          {
+            "name": "__init__.py",
+            "extension": ".py",
+            "size": 64
+          },
+          {
+            "name": "test_basic.py",
+            "extension": ".py",
+            "size": 5920
+          }
+        ]
       }
     ],
     "files": [
       {
-        "name": "IMPLEMENTATION_PLAN.md",
+        "name": "JUNIOR_GUIDE.md",
         "extension": ".md",
-        "size": 7605
+        "size": 1370
       },
       {
         "name": "main.py",
@@ -53,39 +89,36 @@
         "size": 92
       },
       {
-        "name": "PHASE1_PLAN.md",
-        "extension": ".md",
-        "size": 2727
-      },
-      {
         "name": "pyproject.toml",
         "extension": ".toml",
-        "size": 252
+        "size": 304
       },
       {
         "name": "README.md",
         "extension": ".md",
-        "size": 8877
+        "size": 9519
       },
       {
         "name": "repo_map.json",
         "extension": ".json",
-        "size": 1943
+        "size": 2884
       },
       {
         "name": "uv.lock",
         "extension": ".lock",
-        "size": 71023
+        "size": 74126
       }
     ]
   },
   "missions": {
     ".": "Contains Python source code",
+    "reports": "Contains markdown documentation",
     "src": "Contains the main source code for the application",
-    "src\\triage_agent": "Contains Python source code"
+    "src\\triage_agent": "Contains Python source code",
+    "tests": "Contains unit tests and test fixtures"
   },
   "summary": {
-    "total_directories": 3,
+    "total_directories": 5,
     "root_path": "."
   }
 }
